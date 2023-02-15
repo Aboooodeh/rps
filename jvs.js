@@ -1,4 +1,12 @@
-function getComputerChoice() {         //This function is to get computer choice
+let rock = document.getElementById("rock");
+let paper = document.getElementById("paper");
+let scissors = document.getElementById("scissors");
+let resultt = document.getElementById("result");
+let hs = 0;
+let cs = 0; 
+
+function getComputerChoice() {
+
   let choices = ["rock", "paper", "scissors"];
 
   let index = Math.floor(Math.random() * 3);
@@ -6,9 +14,12 @@ function getComputerChoice() {         //This function is to get computer choice
   return choices[index];
 }
 
-function round(hc, cc) {                        //This function is to determine the winner
-  let result;                                   // h = Human , c = Computer
+function round(e) {
+
+  const cc=getComputerChoice();
+  let hc=e.target.innerText;                                                     
   hc = hc.toLowerCase();
+  let result = '';
   if (hc === cc) result = "t";
   else {
     if (hc === "rock") {
@@ -22,26 +33,28 @@ function round(hc, cc) {                        //This function is to determine 
       if (cc === "rock") result = "h";
     } else result = "e";
   }
-  return result;
-}
-
-function game() {                                                     //This function is to start a game;
-  let hs = 0;
-  let cs = 0;
-  for (let i = 0; i < 5; i++) {
-    let result = round(
-      prompt("enter Rock, Paper, Scissors"),
-      getComputerChoice()
-    );
-    if (result === "h") hs++;
-    else if (result === "t") cs++;
-    else if (result === "e") {
-      console.log("input error, try again");                 // this to cancel the round if the input is invalid
-      i--;
-    }
-    console.log(`Your score is ${hs}, Computer score ${cs}`);
-    if (hs >= 3 || cs >= 3) break;
+  if (result === "t") resultt.innerText="Tie";
+else if (result === "h") {
+  hs++;
+  if(hs===5){
+    resultt.innerText="You Won the game";
+    rock.removeEventListener("click", round);
+    paper.removeEventListener("click", round);
+    scissors.removeEventListener("click", round);
   }
-  if (hs > cs) console.log("You Win");
-  else console.log("You Lose");
+  else resultt.innerText=`You won the round\nYour score is ${hs}, Computer score is ${cs}`;
+} else if (result === "c") {
+  cs++;
+  if(cs===5){
+    resultt.innerText="You Lost the game";
+    rock.removeEventListener("click", round);
+    paper.removeEventListener("click", round);
+    scissors.removeEventListener("click", round);
+  }
+  else resultt.innerText=`Computer won the round\nYour score is ${hs}, Computer score is ${cs}`;
+
 }
+}
+rock.addEventListener("click", round);
+paper.addEventListener("click", round);
+scissors.addEventListener("click", round);
